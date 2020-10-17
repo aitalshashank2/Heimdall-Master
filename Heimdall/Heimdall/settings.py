@@ -21,6 +21,7 @@ with io.open(CONFIG, 'r') as stream:
         CONFIG_VARS = yaml.safe_load(stream)
     except yaml.YAMLError as exc:
         print(exc)
+        raise
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

@@ -1,0 +1,12 @@
+DEBUG: TRUE
+SECRET_KEY: <SECRET-KEY>
+
+DATABASE:
+    HOST: 127.0.0.1
+    NAME: <Name of PG Database>
+    USER: <User having rights to that Database>
+    PASSWORD: <Password of that user>
+
+GITHUB:
+    repo: <Path to local repository cloned from Heimdall-SSH-Keys>
+    secret: <GitHub Webhook Secret>
