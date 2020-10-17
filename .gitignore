@@ -1,0 +1,8 @@
+.vscode
+.env
+
+Heimdall/Heimdall/__pycache__
+Heimdall/bipolar/__pycache__
+Heimdall/bipolar/migrations/__pycache__
+
+configuration/config.yml
