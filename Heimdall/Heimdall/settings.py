@@ -36,7 +36,7 @@ SECRET_KEY = CONFIG_VARS['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = CONFIG_VARS['DEBUG']
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = CONFIG_VARS['ALLOWED_HOSTS']
 
 
 # Application definition
@@ -121,13 +121,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = CONFIG_VARS['USE_TZ']
 
 
 # Static files (CSS, JavaScript, Images)

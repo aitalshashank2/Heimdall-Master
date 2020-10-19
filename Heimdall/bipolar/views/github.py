@@ -12,10 +12,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 CONFIG = "../configuration/config.yml"
 
-def index(request):
-    return HttpResponse("You have reached Bipolar. Sorry, but Bipolar only transports The Gods of Asgard and information. You are neither...")
-
-
 # View to update the local ssh keys repository
 @csrf_exempt
 def gh_listener(request):
@@ -57,9 +53,10 @@ def gh_listener(request):
                         keys += open(repo+"public-keys/"+user.rstrip(), 'r').read()
                     except FileNotFoundError:
                         print(f"The public key for the user {user} does not exist. Couldn't add to {server}.")
+                    except IsADirectoryError:
+                        pass
                 
                 payload_keys = {'authorized_keys': keys}
-                payload_keys = json.dumps(payload_keys)
                 r = requests.post(dest, json=payload_keys)
 
                 return HttpResponse("OK")

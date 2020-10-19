@@ -7,6 +7,13 @@ DATABASE:
     USER: <User having rights to that Database>
     PASSWORD: <Password of that user>
 
+ALLOWED_HOSTS:
+    - 127.0.0.1
+    - <list of ip addresses of all the servers>
+
 GITHUB:
-    repo: <Path to local repository cloned from Heimdall-SSH-Keys>
-    secret: <GitHub Webhook Secret>
+    REPO: <Path to local repository cloned from Heimdall-SSH-Keys>
+    SECRET: <GitHub Webhook Secret>
+
+SERVERSIDE:
+    SECRET: <secret for Heimdall-serverside>
