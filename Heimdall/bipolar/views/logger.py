@@ -40,9 +40,12 @@ def log(request):
             client = data.get("client")
 
             if data["activity"] == "LOGOUT_SSH":
-                client = Log.objects.get(ip=data["ip"], port=data["port"], activity="LOGIN_SSH_KEY").client
+                try:
+                    client = Log.objects.get(ip=data["ip"], port=data["port"], activity="LOGIN_SSH_KEY").client
+                except Log.DoesNotExist:
+                    client = "Unidentified"
 
-            log = Log(time=d, host=data["host"], user=data["user"], ip=data["ip"], port=data["port"], activity=data["activity"], client=client)
+            log = Log(time=d, host=data["host"], user=data["user"], ip=data.get("ip"), port=data.get("port"), activity=data["activity"], client=client)
             log.save()
 
             headers = {
@@ -62,7 +65,15 @@ def log(request):
                 }
             elif data["activity"] == "LOGOUT_SSH":
                 payload = {
-                    "text": f"{client} logged off from {data['user']}@{data['host']}"
+                    "text": f"{client} logged off from {data['user']}@{data['host']}."
+                }
+            elif data["activity"] == "CHUSR_OPEN":
+                payload = {
+                    "text": f"{client} opened a session for {data['user']}@{data['host']}."
+                }
+            elif data["activity"] == "CHUSR_CLOSE":
+                payload = {
+                    "text": f"Session for {data['user']}@{data['host']} closed."
                 }
 
             requests.post(SLACK, json=payload, headers=headers)
