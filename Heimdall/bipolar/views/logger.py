@@ -22,6 +22,22 @@ SERVERSIDE_SECRET = CONFIG_VARS['SERVERSIDE']['SECRET']
 SLACK = CONFIG_VARS['SLACK']
 
 
+def locate(ip):
+
+    r = requests.get(url=f"http://ip-api.com/json/{ip}", timeout=1)
+    r = r.json()
+    if r["status"] == "success":
+        location = f"Latitude: {r.get('lat')}, Longitude: {r.get('lon')}\n{r.get('city')}, {r.get('regionName')}, {r.get('country')}"
+
+        return {
+            "title": "location",
+            "value": location,
+            "short": False
+        }
+    else:
+        return {}
+
+
 @csrf_exempt
 def log(request):
 
@@ -41,7 +57,7 @@ def log(request):
 
             if data["activity"] == "LOGOUT_SSH":
                 try:
-                    client = Log.objects.get(ip=data["ip"], port=data["port"], activity="LOGIN_SSH_KEY").client
+                    client = Log.objects.filter(ip=data["ip"], port=data["port"], activity="LOGIN_SSH_KEY").last().client
                 except Log.DoesNotExist:
                     client = "Unidentified"
 
@@ -54,29 +70,138 @@ def log(request):
             payload = {
                 'text': "Activity Detected"
             }
-
+            
             if data["activity"] == "LOGIN_SSH_PWD":
+
+                location = locate(data['ip'])
+
                 payload = {
-                    "text": f"Someone logged into {data['user']}@{data['host']} by using password."
-                }
-            elif data["activity"] == "LOGIN_SSH_KEY":
-                payload = {
-                    "text": f"{data['client']} logged into {data['user']}@{data['host']} using SSH Key."
-                }
-            elif data["activity"] == "LOGOUT_SSH":
-                payload = {
-                    "text": f"{client} logged off from {data['user']}@{data['host']}."
-                }
-            elif data["activity"] == "CHUSR_OPEN":
-                payload = {
-                    "text": f"{client} opened a session for {data['user']}@{data['host']}."
-                }
-            elif data["activity"] == "CHUSR_CLOSE":
-                payload = {
-                    "text": f"Session for {data['user']}@{data['host']} closed."
+                    "color": "good",
+                    "fields": [
+                        {
+                            "title": "Action",
+                            "value": "SSH Login with password",
+                            "short": False
+                        },
+                        {
+                            "title": "Host User",
+                            "value": data["user"],
+                            "short": False
+                        },
+                        {
+                            "title": "Server",
+                            "value": data["host"],
+                            "short": False
+                        },
+                        location
+                    ]
                 }
 
-            requests.post(SLACK, json=payload, headers=headers)
+            elif data["activity"] == "LOGIN_SSH_KEY":
+
+                location = locate(data['ip'])
+
+                payload = {
+                    "color": "good",
+                    "fields": [
+                        {
+                            "title": "Action",
+                            "value": "SSH Login with Key",
+                            "short": False
+                        },
+                        {
+                            "title": "User",
+                            "value": data['client'],
+                            "short": False
+                        },
+                        {
+                            "title": "Host User",
+                            "value": data["user"],
+                            "short": False
+                        },
+                        {
+                            "title": "Server",
+                            "value": data["host"],
+                            "short": False
+                        },
+                        location
+                    ]
+                }
+
+            elif data["activity"] == "LOGOUT_SSH":
+
+                location = locate(data['ip'])
+
+                payload = {
+                    "color": "warning",
+                    "fields": [
+                        {
+                            "title": "Action",
+                            "value": "SSH Logout",
+                            "short": False
+                        },
+                        {
+                            "title": "User",
+                            "value": client,
+                            "short": False
+                        },
+                        {
+                            "title": "Host User",
+                            "value": data["user"],
+                            "short": False
+                        },
+                        {
+                            "title": "Server",
+                            "value": data["host"],
+                            "short": False
+                        },
+                        location
+                    ]
+                }
+
+            elif data["activity"] == "CHUSR_OPEN":
+
+                payload = {
+                    "color": "danger",
+                    "fields": [
+                        {
+                            "title": "Action",
+                            "value": "Opened Superuser Session",
+                            "short": False
+                        },
+                        {
+                            "title": "Host User",
+                            "value": data["client"],
+                            "short": False
+                        },
+                        {
+                            "title": "Server",
+                            "value": data["host"],
+                            "short": False
+                        }
+                    ]
+                }
+
+            elif data["activity"] == "CHUSR_CLOSE":
+
+                payload = {
+                    "color": "danger",
+                    "fields": [
+                        {
+                            "title": "Action",
+                            "value": "Closed Superuser Session",
+                            "short": False
+                        },
+                        {
+                            "title": "Server",
+                            "value": data["host"],
+                            "short": False
+                        }
+                    ]
+                }
+
+
+            x = requests.post(SLACK, json=payload, headers=headers)
 
             return HttpResponse("Logged")
         else:
