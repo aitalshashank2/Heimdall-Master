@@ -17,3 +17,5 @@ GITHUB:
 
 SERVERSIDE:
     SECRET: <secret for Heimdall-serverside>
+
+SLACK: <slack hook>
