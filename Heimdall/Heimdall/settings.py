@@ -14,7 +14,7 @@ from pathlib import Path
 import yaml
 import io
 
-CONFIG = '../configuration/config.yml'
+CONFIG = 'configuration/config.yml'
 
 with io.open(CONFIG, 'r') as stream:
     try:
@@ -92,7 +92,7 @@ DATABASES = {
         'USER': CONFIG_VARS['DATABASE']['USER'],
         'PASSWORD': CONFIG_VARS['DATABASE']['PASSWORD'],
         'HOST': CONFIG_VARS['DATABASE']['HOST'],
-        'PORT': '',
+        'PORT': CONFIG_VARS['DATABASE']['PORT'],
     }
 }
 

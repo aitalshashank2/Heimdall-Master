@@ -3,4 +3,6 @@
 
 *.pyc
 
-configuration/config.yml
+Heimdall/configuration/config.yml
+
+postgres/database.env

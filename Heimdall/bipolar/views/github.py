@@ -10,7 +10,7 @@ import requests
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 
-CONFIG = "../configuration/config.yml"
+CONFIG = "configuration/config.yml"
 
 # View to update the local ssh keys repository
 @csrf_exempt

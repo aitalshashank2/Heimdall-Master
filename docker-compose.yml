@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+    db:
+        restart: always
+        build: ./postgres
+        container_name: heimdall_postgres
+        env_file: 
+            - postgres/database.env
+        expose: 
+            - 5432
+        volumes:
+            - database:/var/lib/postgresql/data/
+        networks:
+            - heimdall_network
+    
+    web:
+        restart: always
+        build: ./Heimdall
+        container_name: heimdall_web
+        command: gunicorn Heimdall.wsgi --bind 0.0.0.0:8000
+        volumes:
+            - ./Heimdall/:/Heimdall/
+        expose:
+            - 8000
+        depends_on: 
+            - db
+        networks: 
+            - heimdall_network
+    
+    nginx:
+        build: ./nginx
+        container_name: heimdall_nginx
+        ports: 
+            - "4321:80"
+        depends_on: 
+            - web
+        networks: 
+            - heimdall_network
+
+volumes:
+    database:
+
+networks:
+    heimdall_network:

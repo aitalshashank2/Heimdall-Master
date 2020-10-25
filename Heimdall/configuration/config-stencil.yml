@@ -6,9 +6,11 @@ DATABASE:
     NAME: <Name of PG Database>
     USER: <User having rights to that Database>
     PASSWORD: <Password of that user>
+    PORT: <Port of PGSQL>
 
 ALLOWED_HOSTS:
-    - 127.0.0.1
+    - "127.0.0.1"
+    - "localhost"
     - <list of ip addresses of all the servers>
 
 GITHUB:

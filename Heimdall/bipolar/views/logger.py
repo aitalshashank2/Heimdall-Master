@@ -13,7 +13,7 @@ from django.utils import timezone
 
 from bipolar.models import Log
 
-CONFIG = "../configuration/config.yml"
+CONFIG = "configuration/config.yml"
 
 with io.open(CONFIG, 'r') as stream:
     CONFIG_VARS = yaml.safe_load(stream)
