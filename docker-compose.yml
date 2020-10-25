@@ -16,7 +16,8 @@ services:
     
     web:
         restart: always
-        build: ./Heimdall
+        build: 
+            context: ./Heimdall
         container_name: heimdall_web
         command: gunicorn Heimdall.wsgi --bind 0.0.0.0:8000
         volumes:

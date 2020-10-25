@@ -26,16 +26,21 @@ def gh_listener(request):
         
         repo = CONFIG_VARS["GITHUB"]["REPOSITORY"]
         secret = CONFIG_VARS["GITHUB"]["SECRET"]
+        token = CONFIG_VARS["GITHUB"]["OAUTHTOKEN"]
+        origin = CONFIG_VARS["GITHUB"]["ORIGIN"]
 
         encoded_secret = secret.encode()
         signature = 'sha1=' + hmac.new(encoded_secret, request.body, hashlib.sha1).hexdigest()
         
         if signature == request.headers['X-Hub-Signature']:
 
+            remote = origin.split('//')[0] + token + "x-oauth-basic@" + origin.split('//')[1]
+
             pull = subprocess.Popen(["git", "pull", "origin", "master"], cwd=repo)
             output, error = pull.communicate()
 
             servers = os.listdir(repo+"servers/")
+
             with io.open(repo+"server-mappings.yml", "r") as stream:
                 try:
                     server_mappings = yaml.safe_load(stream)
@@ -55,7 +60,7 @@ def gh_listener(request):
                         print(f"The public key for the user {user} does not exist. Couldn't add to {server}.")
                     except IsADirectoryError:
                         pass
-                
+
                 payload_keys = {'authorized_keys': keys}
                 r = requests.post(dest, json=payload_keys)
 
