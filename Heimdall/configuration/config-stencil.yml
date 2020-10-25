@@ -1,23 +1,24 @@
-DEBUG: TRUE
-SECRET_KEY: <SECRET-KEY>
+DEBUG: (TRUE / FALSE)
+USE_TZ: FALSE # DO NOT CHANGE
+SECRET_KEY: # A fifty character key used by Django for hashing
 
 DATABASE:
-    HOST: 127.0.0.1
-    NAME: <Name of PG Database>
-    USER: <User having rights to that Database>
-    PASSWORD: <Password of that user>
-    PORT: <Port of PGSQL>
+    HOST: db # DO NOT CHANGE
+    NAME: # The name of the database which stores the logs
+    USER: # The user having rights to the database
+    PASSWORD: # Password for the user
+    PORT: # Port on which the database container is listening
 
 ALLOWED_HOSTS:
-    - "127.0.0.1"
-    - "localhost"
-    - <list of ip addresses of all the servers>
+    - "web" # DO NOT CHANGE
 
 GITHUB:
-    REPO: <Path to local repository cloned from Heimdall-SSH-Keys>
-    SECRET: <GitHub Webhook Secret>
+    REPOSITORY: /Heimdall-ssh-keys/
+    SECRET: # The secret that was used while making the webhook
+    OAUTHTOKEN: # OAuth Token generated in the Fourth step
+    ORIGIN: https://github.com/<your-name-here>/Heimdall-SSH-Keys.git
 
 SERVERSIDE:
-    SECRET: <secret for Heimdall-serverside>
+    SECRET: # A secret that will be used by Heimdall to verify requests from different Servers internally
 
-SLACK: <slack hook>
+SLACK: # URL to the Slack API listening to Heimdall's Webhook.
