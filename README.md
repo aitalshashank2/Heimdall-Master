@@ -84,7 +84,6 @@ Heimdall is a GitHub based server login manager. It uses GitHub to track the SSH
         REPOSITORY: /Heimdall-ssh-keys/
         SECRET: # The secret that was used while making the webhook
         OAUTHTOKEN: # OAuth Token generated in the Fourth step
-        ORIGIN: https://github.com/<your-username-here>/Heimdall-SSH-Keys.git
     
     SERVERSIDE:
         SECRET: # A secret that will be used by Heimdall to verify requests from different Servers internally

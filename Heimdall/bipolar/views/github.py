@@ -27,14 +27,11 @@ def gh_listener(request):
         repo = CONFIG_VARS["GITHUB"]["REPOSITORY"]
         secret = CONFIG_VARS["GITHUB"]["SECRET"]
         token = CONFIG_VARS["GITHUB"]["OAUTHTOKEN"]
-        origin = CONFIG_VARS["GITHUB"]["ORIGIN"]
 
         encoded_secret = secret.encode()
         signature = 'sha1=' + hmac.new(encoded_secret, request.body, hashlib.sha1).hexdigest()
         
         if signature == request.headers['X-Hub-Signature']:
-
-            remote = origin.split('//')[0] + token + "x-oauth-basic@" + origin.split('//')[1]
 
             pull = subprocess.Popen(["git", "pull", "origin", "master"], cwd=repo)
             output, error = pull.communicate()
