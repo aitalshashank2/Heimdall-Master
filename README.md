@@ -50,22 +50,22 @@ Heimdall is a GitHub based server login manager. It uses GitHub to track the SSH
     - Click on *Add Webhook*
 
 - Now, go to the cloned **Heimdall - Master** for server setup
-    ```
+    ```bash
     cd .../Heimdall-Master
     ```
 
 - We need to set up certain environment variables first. Go to the `configuration` folder
-    ```
+    ```bash
     cd Heimdall/configuration
     ```
 
 - Copy `config-stencil.yml` to `config.yml`
-    ```
+    ```bash
     cp config-stencil.yml config.yml
     ```
 
 - Fill `config.yml` with appropriate values
-    ```
+    ```yml
     DEBUG: (TRUE / FALSE)
     USE_TZ: FALSE # DO NOT CHANGE
     SECRET_KEY: # A fifty character key used by Django for hashing
@@ -93,21 +93,21 @@ Heimdall is a GitHub based server login manager. It uses GitHub to track the SSH
     ```
 
 - Build the docker network and containers using `docker-compose.yml`
-    ```
+    ```bash
     cd ../..
     docker-compose build --build-arg GITHUB_URL=https://<your-oauth-token-here>:x-oauth-basic@github.com/<your-username-here>/Heimdall-SSH-Keys.git
     ```
 
 - Once the network and containers are made, you can start **Heimdall - Master**
-    ```
+    ```bash
     docker-compose up -d
     ```
 
 - If you want to stop the server, use,
-    ```
+    ```bash
     docker-compose down
     ```
 
-- You need to set up two more scripts to get the app to work. You can find them here [Heimdall-Serverside](https://github.com/aitalshashank2/Heimdall-serverside.git)
+- Now all you need to do is run [Heimdall-Serverside](https://github.com/aitalshashank2/Heimdall-serverside.git) on your servers!
 
 
