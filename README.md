@@ -91,6 +91,19 @@ Heimdall is a GitHub based server login manager. It uses GitHub to track the SSH
     SLACK: # URL to the Slack API listening to Heimdall's Webhook.
     ```
 
+- Make `database.env`
+    ```bash
+    cd ../../postgres/
+    cp database-stencil.env database.env
+    ```
+    Edit `database.env`
+    ```env
+    POSTGRES_DB= # The db name used in config.yml above
+    POSTGRES_USER= # The user having rights to the database (Same as in config.yml)
+    POSTGRES_PASSWORD= # The Password for the user (Same as in config.yml)
+    POSTGRES_PORT= # The port on which database server runs (Default: 5432)
+    ```
+
 - Build the docker network and containers using `docker-compose.yml`
     ```bash
     cd ../..
