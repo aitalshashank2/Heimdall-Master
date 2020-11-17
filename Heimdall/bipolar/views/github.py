@@ -59,9 +59,13 @@ def gh_listener(request):
                         pass
 
                 payload_keys = {'authorized_keys': keys}
-                r = requests.post(dest, json=payload_keys)
+                try:
+                    r = requests.post(dest, json=payload_keys)
+                    print("[SUCCESS]")
+                except Exception as e:
+                    print(f"[FAILURE] {e}")
 
-                return HttpResponse("OK")
+            return HttpResponse("OK")
 
         else:
             return HttpResponseBadRequest("Signatures do not match.")
